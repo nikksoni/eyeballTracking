@@ -6,8 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="264.0" prefWidth="381.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cognizant.jitender.FXHelloCVController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cognizant.jitender.FXHelloCVController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <padding>
@@ -19,6 +18,6 @@
       </HBox>
    </bottom>
    <center>
-      <ImageView fx:id="currentFrame" fitHeight="185.0" fitWidth="382.0" opacity="1.00" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+      <ImageView fx:id="currentFrame" fitHeight="373.0" fitWidth="553.0" opacity="1.00" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
