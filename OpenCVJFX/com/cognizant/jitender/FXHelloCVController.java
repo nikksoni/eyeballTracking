@@ -109,7 +109,7 @@ public class FXHelloCVController
 			try
 			{
 				this.timer.shutdown();
-				this.timer.awaitTermination(33, TimeUnit.MILLISECONDS);
+				this.timer.awaitTermination(500, TimeUnit.MILLISECONDS);
 			}
 			catch (InterruptedException e)
 			{
@@ -151,7 +151,10 @@ public class FXHelloCVController
 					// convert the image to gray scale
 					//Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
 					// convert the Mat object (OpenCV) to Image (JavaFX)
+					//Imgproc.Canny(frame, frame, 300, 600, 5, true);
 					imageToShow = mat2Image(pupilDetect(frame));
+//					Imgcodecs.imwrite("cannyie.png", frame);
+					//imageToShow=mat2Image(frame);
 					
 				}
 				
@@ -175,8 +178,6 @@ public class FXHelloCVController
 	 */
 	private Image mat2Image(Mat frame)
 	{
-		System.out.println("mat = "  );
-		
 		// create a temporary buffer
 		MatOfByte buffer = new MatOfByte();
 		// encode the frame in the buffer
@@ -189,6 +190,7 @@ public class FXHelloCVController
 	
 	private Mat pupilDetect(Mat inputFrame)
 	{
+		int pupilRadius=11;
 		
 		
 //		 System.out.println("\nRunning DetectFaceDemo");
@@ -209,23 +211,28 @@ public class FXHelloCVController
 //		    cv::morphologyEx(im_rgb,im_rgb,4,cv::getStructuringElement(cv::MORPH_RECT,cv::Size(size,size)));
 		    
 		  Mat grayScaleImageMatBinaryInversion=new Mat();
-		    Imgproc.threshold(grayScaleImageMat, grayScaleImageMatBinaryInversion, 80, 255, Imgproc.THRESH_BINARY_INV);
+		    Imgproc.threshold(grayScaleImageMat, grayScaleImageMatBinaryInversion, 0, 10, Imgproc.THRESH_BINARY_INV);
 //		    Imgcodecs.imwrite("binaryInversion.png", grey);
 //		    System.out.println(String.format("Writing %s", filename));
 		    List<MatOfPoint> contours= new ArrayList<MatOfPoint>();
-		    Imgproc.findContours(grayScaleImageMatBinaryInversion.clone(), contours,new Mat(), 0, 1);
-		    Imgproc.drawContours(grayScaleImageMatBinaryInversion, contours, -1, new Scalar(255,255,255), -1);
+//		    Imgproc.findContours(grayScaleImageMatBinaryInversion.clone(), contours,new Mat(), 0, 1);
+//		    Imgproc.drawContours(grayScaleImageMatBinaryInversion, contours, -1, new Scalar(255,255,255), -1);
 //		    Imgcodecs.imwrite("test.png", grey);
 		  //  Imgproc.threshold(grey, grey, 80, 255, Imgproc.THRESH_BINARY_INV);
 //		    Imgcodecs.imwrite("inverted.png", grey);
 		    
 //		    std::vector<cv::Vec3f> circles;
 		    Mat circles=new Mat();
+		   // circles.get(1, 1);
 //		    Mat test;
 //		    Imgproc.HoughCircles(image, circles, method, dp, minDist, param1, param2, minRadius, maxRadius);
+		    
+//		    Mat imgSource = Highgui.imread(filepath);
+		    Imgproc.Canny(inputFrame, grayScaleImageMatBinaryInversion, 300, 600, 5, true); 
+		    Imgcodecs.imwrite("cannySample.png", inputFrame);
 		    Imgproc.HoughCircles(grayScaleImageMatBinaryInversion, circles, Imgproc.HOUGH_GRADIENT, 1, 20,3,12,6,20);
 		    
-		    
+		   
 
 		    
 		   /* for (int i = 0; i < contours.size(); i++)
@@ -255,26 +262,28 @@ public class FXHelloCVController
 		    // Draw a bounding box around each face.
 		   
 
-		    for( int i = 0; i < circles.cols(); i++ ) 
-		    {
+//		    for( int i = 0; i < circles.cols(); i++ ) 
+//		    {
 		    	 for (Rect rect : faceDetections.toArray()) {
 		    	    	Imgproc.rectangle(grayScaleImageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-		    	    	double vCircle[]=circles.get(0,i); 
-		    	    	Point center=new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+//		    	    	double vCircle[]=circles.get(0,i); 
+//		    	    	Point center=new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
 		    	
-		    	if(center.x>rect.x&&center.x<(rect.x+rect.width)&&center.y>rect.y&&center.y<(rect.y+rect.height))
-		    	{
-		    		
-		    		  int radius = (int)Math.round(vCircle[2]);
-		    	        // draw the circle center
-		    	       // Imgproc.circle(image, center, 3,new Scalar(0,255,0), -1, 8, 0 );
-		    	        // draw the circle outline
-//		    	        Imgproc.circle( image, center, radius, new Scalar(255,255,255), 1, 10, 0 );
-		    	        Imgproc.circle( grayScaleImageMat, center, radius, new Scalar(0,0,255), 1, 10, 0 );
-		    	}
+		    	    	grayScaleImageMat= IrisDetectionConstantly.detectIris(rect,grayScaleImageMat,grayScaleImageMat,10,200);
+//		    	if(center.x>(rect.x+0.4*rect.width)&&center.x<(rect.x+0.6*rect.width)&&center.y>(rect.y+0.4*rect.height)&&center.y<(rect.y+0.6*rect.height))
+//		    	{
+//		    		
+//		    		  int radius = (int)Math.round(vCircle[2]);
+//		    		  System.out.println("rad="+radius);
+//		    	        // draw the circle center
+//		    	        Imgproc.circle(grayScaleImageMat, new Point(Math.round(rect.x+0.5*rect.width), Math.round(rect.y+0.5*rect.height)), 3,new Scalar(0,255,0), -1, 8, 0 );
+//		    	        // draw the circle outline
+////		    	        Imgproc.circle( image, center, radius, new Scalar(255,255,255), 1, 10, 0 );
+//		    	        Imgproc.circle( grayScaleImageMat, center, radius, new Scalar(0,0,255), 1, 10, 0 );
+//		    	}
 		      }
 		    	
-		    }
+//		    }
 //		    Imgcodecs.imwrite("bw.png", grey);
 //		    Imgcodecs.imwrite("color.png", image);
 		    
