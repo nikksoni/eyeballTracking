@@ -22,6 +22,7 @@ import org.opencv.videoio.VideoCapture;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -37,6 +38,13 @@ public class FXHelloCVController
 	// the FXML button
 	@FXML
 	private Button button;
+	
+	// the FXML button
+		@FXML
+	private Button setConfig;
+		@FXML
+		private Slider threshold ; 
+	
 	// the FXML image view
 	@FXML
 	private ImageView currentFrame;
@@ -80,14 +88,15 @@ public class FXHelloCVController
 					@Override
 					public void run()
 					{
-						Image imageToShow = grabFrame();
+//						System.out.println("thres= "+threshold.);
+						Image imageToShow = grabFrame(threshold.getValue());
 						
 						currentFrame.setImage(imageToShow);
 					}
 				};
 
 				this.timer = Executors.newSingleThreadScheduledExecutor();
-				this.timer.scheduleAtFixedRate(frameGrabber, 0, 330, TimeUnit.MILLISECONDS);
+				this.timer.scheduleAtFixedRate(frameGrabber, 0, 10, TimeUnit.MILLISECONDS);
 				
 				// update the button content
 				this.button.setText("Stop Camera");
@@ -120,21 +129,41 @@ public class FXHelloCVController
 			// release the camera
 			this.capture.release();
 			// clean the frame
-			this.currentFrame.setImage(null);
+//			this.currentFrame.setImage(null);
 		}
 	}
+	
+	@FXML
+	protected void setConfiguration(ActionEvent event)
+	{
+		if (this.cameraActive){
+//			System.out.println("hello");
+//			if(IrisDetectionConstantly.center1==null)
+//			{
+				IrisDetectionConstantly.center1=new Point(IrisDetectionConstantly.p1.x,IrisDetectionConstantly.p1.y);
+				IrisDetectionConstantly.center2=new Point(IrisDetectionConstantly.p2.x, IrisDetectionConstantly.p2.y);
+				
+//			}
+			
+		}
+	
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Get a frame from the opened video stream (if any)
 	 * 
 	 * @return the {@link Image} to show
 	 */
-	private Image grabFrame()
+	private Image grabFrame(double threshold)
 	{
 		// init everything
 		Image imageToShow = null;
 		Mat frame = new Mat();
-		
+//		System.out.println("th"+threshold);
 		// check if the capture is open
 		if (this.capture.isOpened())
 		{				
@@ -146,15 +175,18 @@ public class FXHelloCVController
 				// if the frame is not empty, process it
 				if (!frame.empty())
 				{				
-					
+					 long startTime = System.nanoTime();
+
 
 					// convert the image to gray scale
 					//Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
 					// convert the Mat object (OpenCV) to Image (JavaFX)
 					//Imgproc.Canny(frame, frame, 300, 600, 5, true);
-					imageToShow = mat2Image(pupilDetect(frame));
+					imageToShow = mat2Image(pupilDetect(frame,threshold));
 //					Imgcodecs.imwrite("cannyie.png", frame);
 					//imageToShow=mat2Image(frame);
+					 long endTime = System.nanoTime();
+					 System.out.println("time="+ (endTime-startTime));
 					
 				}
 				
@@ -188,7 +220,7 @@ public class FXHelloCVController
 		return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
 	
-	private Mat pupilDetect(Mat inputFrame)
+	private Mat pupilDetect(Mat inputFrame,double threshold)
 	{
 		int pupilRadius=11;
 		
@@ -199,7 +231,7 @@ public class FXHelloCVController
 		    // directory.
 		    CascadeClassifier faceDetector = new CascadeClassifier("D:/eyeballProject/OpenCVJFX/resources/haarcascade_eye.xml");
 //		    C:/Program%20Files/Java/jdk1.6.0_06/bin/file.txt
-//		    Mat image = Imgcodecs.imread("D:/eyeballProject/OpenCVJFX/resources/lena.png");
+		    Mat image = Imgcodecs.imread("D:/eyeballProject/OpenCVJFX/resources/lena.png");
 
 		    Mat grayScaleImageMat=new Mat();
 		  Imgproc.cvtColor(inputFrame, grayScaleImageMat, Imgproc.COLOR_BGR2GRAY);
@@ -257,42 +289,40 @@ public class FXHelloCVController
 		    MatOfRect faceDetections = new MatOfRect();
 		    faceDetector.detectMultiScale(grayScaleImageMat, faceDetections);
 
-		    System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
+//		    System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
 
 		    // Draw a bounding box around each face.
 		   
 
 //		    for( int i = 0; i < circles.cols(); i++ ) 
 //		    {
-		    	 for (Rect rect : faceDetections.toArray()) {
-		    	    	Imgproc.rectangle(grayScaleImageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-//		    	    	double vCircle[]=circles.get(0,i); 
-//		    	    	Point center=new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
-		    	
-		    	    	grayScaleImageMat= IrisDetectionConstantly.detectIris(rect,grayScaleImageMat,grayScaleImageMat,10,200);
-//		    	if(center.x>(rect.x+0.4*rect.width)&&center.x<(rect.x+0.6*rect.width)&&center.y>(rect.y+0.4*rect.height)&&center.y<(rect.y+0.6*rect.height))
-//		    	{
-//		    		
-//		    		  int radius = (int)Math.round(vCircle[2]);
-//		    		  System.out.println("rad="+radius);
-//		    	        // draw the circle center
-//		    	        Imgproc.circle(grayScaleImageMat, new Point(Math.round(rect.x+0.5*rect.width), Math.round(rect.y+0.5*rect.height)), 3,new Scalar(0,255,0), -1, 8, 0 );
-//		    	        // draw the circle outline
-////		    	        Imgproc.circle( image, center, radius, new Scalar(255,255,255), 1, 10, 0 );
-//		    	        Imgproc.circle( grayScaleImageMat, center, radius, new Scalar(0,0,255), 1, 10, 0 );
-//		    	}
-		      }
-		    	
+//		    	 for (Rect rect : faceDetections.toArray()) {
+//		    	    	Imgproc.rectangle(grayScaleImageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
+////		    	    	double vCircle[]=circles.get(0,i); 
+////		    	    	Point center=new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+//		    	
+//		    	    	grayScaleImageMat= IrisDetectionConstantly.detectIris(rect,grayScaleImageMat,grayScaleImageMat,10,200);
+////		    	if(center.x>(rect.x+0.4*rect.width)&&center.x<(rect.x+0.6*rect.width)&&center.y>(rect.y+0.4*rect.height)&&center.y<(rect.y+0.6*rect.height))
+////		    	{
+////		    		
+////		    		  int radius = (int)Math.round(vCircle[2]);
+////		    		  System.out.println("rad="+radius);
+////		    	        // draw the circle center
+////		    	        Imgproc.circle(grayScaleImageMat, new Point(Math.round(rect.x+0.5*rect.width), Math.round(rect.y+0.5*rect.height)), 3,new Scalar(0,255,0), -1, 8, 0 );
+////		    	        // draw the circle outline
+//////		    	        Imgproc.circle( image, center, radius, new Scalar(255,255,255), 1, 10, 0 );
+////		    	        Imgproc.circle( grayScaleImageMat, center, radius, new Scalar(0,0,255), 1, 10, 0 );
+////		    	}
+//		      }
+//		    long startTime = System.nanoTime();
+		   
+		if (faceDetections.toArray().length > 1) {
+			grayScaleImageMat = IrisDetectionConstantly.detectPoint(faceDetections.toArray()[0],
+					faceDetections.toArray()[1], grayScaleImageMat, grayScaleImageMat, 10, (int)threshold);
+		}
+//		 long endTime = System.nanoTime();
+//		 System.out.println("time="+ (endTime-startTime));
 //		    }
-//		    Imgcodecs.imwrite("bw.png", grey);
-//		    Imgcodecs.imwrite("color.png", image);
-		    
-		    
-		    
-		    
-		    // Save the visualized detection.
-//		    System.out.println(String.format("Writing %s", filename));
-//		    Imgcodecs.imwrite(filename, grey);
 		    return grayScaleImageMat;
 	}
 	

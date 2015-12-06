@@ -1,14 +1,12 @@
 package application;
 	
-import org.opencv.core.Core;
-
-import com.cognizant.jitender.FXHelloCVController;
-
 import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+import org.opencv.core.Core;
 
 /**
  * The main class for a JavaFX application. It creates and handle the main
@@ -26,9 +24,9 @@ public class Main extends Application
 			// load the FXML resource
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OpenCVJFX.fxml"));
 			// store the root element so that the controllers can use it
-			BorderPane rootElement = (BorderPane) loader.load();
+			Pane rootElement = (Pane) loader.load();
 			// create and style a scene
-			Scene scene = new Scene(rootElement, 800, 600);
+			Scene scene = new Scene(rootElement, 900, 720);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			// create the stage with the given title and the previously created
 			// scene
@@ -40,6 +38,7 @@ public class Main extends Application
 		}
 		catch (Exception e)
 		{
+			System.out.println("Exception "+e);
 			e.printStackTrace();
 		}
 	}
