@@ -1,4 +1,14 @@
-package com.cognizant.jitender;
+package src.com.cognizant.jitender;
+
+import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.PointerInfo;
+import java.awt.Toolkit;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -6,74 +16,61 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import application.ImageGaze;
+
+
 public class IrisDetectionConstantly {
 	static Point center1=null;
 	static Point center2=null;
 	static Point p1=null;
 	static Point p2=null;
-
-	/*public static Mat detectIris(Rect rect, Mat input, Mat output,
-			int irisRadius, int thresholdLevel) {
-		Mat grey = new Mat();
-		System.out.println("threshold= "+thresholdLevel);
-		Imgproc.Canny(input, grey, thresholdLevel, 600, 5, true);
-		int localMax = 0;
-		int localRadiusX = 0;
-		int localRadiusY = 0;
-		byte[] pixelD = { 0, 0, 0 };
-		for (int xalign = 150; xalign < 180; xalign++) {
-
-			input.put(xalign, 280, pixelD);
-		}
-		for (int yalign = 265; yalign < 295; yalign++) {
-
-			input.put(165, yalign, pixelD);
-		}
-
-		for (int xAxis = (int) (rect.x + 0.3 * rect.width); xAxis <= rect.x
-				+ 0.7 * rect.width; xAxis++) {
-			for (int yAxis = (int) (rect.y + 0.3 * rect.height); yAxis <= rect.y
-					+ 0.7 * rect.height; yAxis++) {
-				int count = findMax(grey, xAxis, yAxis, irisRadius,
-						thresholdLevel);
-				if (count > localMax) {
-					localMax = count;
-					localRadiusX = xAxis;
-					localRadiusY = yAxis;
+	static double[][] outputStream=new double[1000][3];
+	static long startTime=0;
+	static long endTime=0;
+	static int counter=0;
+	static File file;
+	public static void saveData(Point button) throws FileNotFoundException, IOException{
+//		 try {  
+				PointerInfo a = MouseInfo.getPointerInfo();
+				double relX=a.getLocation().x-button.x;
+				double relY=a.getLocation().y-button.y;
+				for(int i=0;i<counter;i++)
+				{
+					outputStream[i][0]=outputStream[i][0]+relX;
+					outputStream[i][1]=outputStream[i][1]+relY;
 				}
-			}
-		}
-		if (localRadiusX != 0 && localRadiusY != 0 && x == 0 && y == 0) {
-			x = localRadiusX;
-			y = localRadiusY;
-		}
-		int delx = x - localRadiusX;
-		int dely = localRadiusY - y;
-		if (delx > -4 && delx < 4) {
-			delx = 0;
-		}
-		if (dely > -1 && dely < 1) {
-			dely = 0;
-		}
-		if (delx < 35 && dely < 35 && delx > -35 && dely > -35) {
-			int dx = (int) ((delx * 26.2) / 1.2);
-			int dy = (int) ((dely * 26.2) / 1.2);
-			System.out.println("delx= " + dx + " dy= " + dy);
-			Point center2 = new Point(x + dx, y + dy);
-			Imgproc.circle(input, center2, 1, new Scalar(0, 0, 255), 3, 10, 0);
-		}
-		Point center = new Point(localRadiusX, localRadiusY);
-		Imgproc.circle(input, center, irisRadius, new Scalar(0, 0, 255), 1, 10,
-				0);
-		return input;
-	}
-	*/
+				
+				ImageGaze.gazeImage(outputStream,counter);
+	           /* file = new File("finalMainData.txt");  
+	            if (!file.exists()) {  
+	                file.createNewFile();  
+	            }  
+//	  System.out.println(outputStream[counter][0]+"--------------"+outputStream[counter][1]);
+	            // Write text on  txt file.  
+	            FileWriter fw = new FileWriter(file, true);  
+	            BufferedWriter bw = new BufferedWriter(fw); 
+	            for (int i = 0; i <= counter; i++) {
+//	            	 System.out.println(outputStream[i][0]+"--------------"+outputStream[i][1]);
+//	            	 bw.write("output["+i+"][0]="+outputStream[i][0]+"; output["+i+"][1]="+outputStream[i][1]+"\n"); 
+	            	 bw.write((outputStream[i][0]+relX)+"  "+(outputStream[i][1]+relY)+"\n"); 
+	            	System.out.println("Done");
+				}
+	            System.out.println("Done");
+	            bw.close();  
+	  
+	        } catch (IOException e) {  
+	        	System.out.println("Error");
+	            e.printStackTrace();  
+	        }          */
+	}  	
+	
 	public static Mat detectPoint(Rect rect1, Rect rect2, Mat input, Mat output, int irisRadius,
 			int thresholdLevel) {
-		Imgproc.rectangle(input, new Point(rect1.x, rect1.y), new Point(rect1.x + rect1.width,
-				rect1.y + rect1.height), new Scalar(0, 255, 0));
-		Imgproc.rectangle(input, new Point(rect2.x, rect2.y), new Point(rect2.x + rect2.width,
-				rect2.y + rect2.height), new Scalar(0, 255, 0));
+		
+//		Imgproc.rectangle(input, new Point(rect1.x, rect1.y), new Point(rect1.x + rect1.width,
+//				rect1.y + rect1.height), new Scalar(0, 255, 0));
+//		Imgproc.rectangle(input, new Point(rect2.x, rect2.y), new Point(rect2.x + rect2.width,
+//				rect2.y + rect2.height), new Scalar(0, 255, 0));
 		Mat grey = new Mat();
 		Imgproc.Canny(input, grey, thresholdLevel, 600, 5, true);
 		int localMax1 = 0;
@@ -105,7 +102,7 @@ public class IrisDetectionConstantly {
 			}
 		}
 		int delx = 0, dely = 0, del2x = 0, del2y = 0;
-		double dis = 46.2;
+		double dis = 56.2;
 		if (center1 != null) {
 			delx = (int) center1.x - localRadiusX1;
 			dely = localRadiusY1 - (int) center1.y;
@@ -135,13 +132,23 @@ public class IrisDetectionConstantly {
 		p2 = new Point(localRadiusX2, localRadiusY2);
 		Imgproc.circle(input, p2, irisRadius, new Scalar(0, 0, 255), 1, 10, 0);
 		input = drawPoint(pt1, pt2, input);
-		return input;
 //		 return grey;
+		return input;
 	}	
 	
 	public static Mat drawPoint(Point point1, Point point2, Mat input) {
-		Point defaultCenter = new Point(input.cols()/2,input.rows()/2);
+		Point defaultCenter = new Point(input.cols() / 2, input.rows() / 2);
 		int margin = 60;
+		if (center1 != null) {
+			if (startTime == 0) {
+				startTime = System.nanoTime();
+			}
+			endTime = System.nanoTime();
+			outputStream[counter][2] = endTime - startTime;
+			startTime = endTime;
+			outputStream[counter][0] = (point1.x + point2.x) / 2;
+			outputStream[counter++][1] = (point1.y + point2.y) / 2;
+		}
 		if (point1.x - point2.x < margin && point1.y - point2.y < margin
 				&& point1.x - point2.x > -margin && point1.y - point2.y > -margin) {
 			Point newPoint = new Point((point1.x + point2.x) / 2, (point1.y + point2.y) / 2);
