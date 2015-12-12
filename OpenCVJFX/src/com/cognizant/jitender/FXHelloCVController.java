@@ -103,7 +103,7 @@ public class FXHelloCVController {
 
 					@Override
 					public void run() {
-						if(false){
+						if(flag==1){
 							try {
 								InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
 								BufferedImage bufferedImage = ImageIO.read(fis);
@@ -177,7 +177,7 @@ public class FXHelloCVController {
 					IrisDetectionConstantly.p2.y);
 			 }
 
-		 	/*try {
+		 	try {
 				InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
 				BufferedImage bufferedImage = ImageIO.read(fis);
 				Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
@@ -188,7 +188,7 @@ public class FXHelloCVController {
 			}
 			catch (IOException e) {
 				e.printStackTrace();
-			}*/
+			}
 		}
 
 	}
