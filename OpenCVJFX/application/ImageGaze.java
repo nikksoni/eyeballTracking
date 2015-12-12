@@ -36,11 +36,11 @@ public class ImageGaze extends JPanel {
 		int w = old.getWidth();
 		int h = old.getHeight();
 
-		BufferedImage img = new BufferedImage(880, 880, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 
 		Graphics2D g2d = img.createGraphics();
 
-		g2d.drawImage(old, 0, 0, 880, 880, null);
+		g2d.drawImage(old, 0, 0, w, h, null);
 		g2d.setStroke(new BasicStroke(12));
 		g2d.setColor(Color.BLUE);
 		g2d.drawOval(xCord, yCord, 19, 10);
@@ -51,13 +51,14 @@ public class ImageGaze extends JPanel {
 	public static void create(final double[][] arr) {
 
 		try {
-			Path currentRelativePath = Paths.get("");
+			//Path currentRelativePath = Paths.get("");
 			//String s = currentRelativePath.toAbsolutePath().toString();
 			InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
 			image = ImageIO.read(fis);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		panel = new JPanel();
 		final JFrame f = new JFrame();
 		Timer timer = new Timer((int) arr[count][2], new ActionListener() {

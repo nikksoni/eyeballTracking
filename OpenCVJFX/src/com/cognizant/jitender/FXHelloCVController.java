@@ -103,12 +103,13 @@ public class FXHelloCVController {
 
 					@Override
 					public void run() {
-						if(flag==1){
+						if(1==flag){
 							try {
 								InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
 								BufferedImage bufferedImage = ImageIO.read(fis);
 								Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
 								currentFrame.setImage(imageToShow);
+								grabFrame(threshold.getValue());
 							}
 							catch (IOException e) {
 								e.printStackTrace();
@@ -251,8 +252,8 @@ public class FXHelloCVController {
 
 		// Create a face detector from the cascade file in the resources
 		// directory.
-		Path currentRelativePath = Paths.get("");
-		String s = currentRelativePath.toAbsolutePath().toString();
+		//Path currentRelativePath = Paths.get("");
+		//String s = currentRelativePath.toAbsolutePath().toString();
 		//System.out.println(s);
 		CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_eye.xml");
 		// C:/Program%20Files/Java/jdk1.6.0_06/bin/file.txt
@@ -268,9 +269,9 @@ public class FXHelloCVController {
 		// Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3)));
 		// cv::morphologyEx(im_rgb,im_rgb,4,cv::getStructuringElement(cv::MORPH_RECT,cv::Size(size,size)));
 
-		Mat grayScaleImageMatBinaryInversion = new Mat();
-		Imgproc.threshold(grayScaleImageMat, grayScaleImageMatBinaryInversion, 0, 10,
-				Imgproc.THRESH_BINARY_INV);
+//		Mat grayScaleImageMatBinaryInversion = new Mat();
+//		Imgproc.threshold(grayScaleImageMat, grayScaleImageMatBinaryInversion, 0, 10,
+//				Imgproc.THRESH_BINARY_INV);
 		// Imgcodecs.imwrite("binaryInversion.png", grey);
 		// System.out.println(String.format("Writing %s", filename));
 //		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -283,17 +284,17 @@ public class FXHelloCVController {
 		// Imgcodecs.imwrite("inverted.png", grey);
 
 		// std::vector<cv::Vec3f> circles;
-		Mat circles = new Mat();
+	//	Mat circles = new Mat();
 		// circles.get(1, 1);
 		// Mat test;
 		// Imgproc.HoughCircles(image, circles, method, dp, minDist, param1,
 		// param2, minRadius, maxRadius);
 
 		// Mat imgSource = Highgui.imread(filepath);
-		Imgproc.Canny(inputFrame, grayScaleImageMatBinaryInversion, 300, 600, 5, true);
-		Imgcodecs.imwrite("cannySample.png", inputFrame);
-		Imgproc.HoughCircles(grayScaleImageMatBinaryInversion, circles, Imgproc.HOUGH_GRADIENT, 1,
-				20, 3, 12, 6, 20);
+//		Imgproc.Canny(inputFrame, grayScaleImageMatBinaryInversion, 300, 600, 5, true);
+//		Imgcodecs.imwrite("cannySample.png", inputFrame);
+//		Imgproc.HoughCircles(grayScaleImageMatBinaryInversion, circles, Imgproc.HOUGH_GRADIENT, 1,
+//				20, 3, 12, 6, 20);
 
 		/*
 		 * for (int i = 0; i < contours.size(); i++) { double area

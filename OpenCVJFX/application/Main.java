@@ -55,7 +55,7 @@ public class Main extends Application
 	    BufferedImage targetImg;
 	    public JPanel panel,panel_1,mainPanel;
 	    private static final int baseSize = 850;
-	    private static final String basePath ="C:/";
+	    private static final String basePath ="/";
 
 		public void loaderStart(final String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
@@ -97,8 +97,6 @@ public class Main extends Application
 	            	startTracking(args,btnStart);
 	            }
 	        });
-
-
 
 	        panel_1 = new JPanel();
 	        panel_1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));

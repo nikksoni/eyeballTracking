@@ -38,6 +38,7 @@ public class IrisDetectionConstantly {
 				{
 					outputStream[i][0]=outputStream[i][0]+relX;
 					outputStream[i][1]=outputStream[i][1]+relY;
+					System.out.println(outputStream[i][0]+"--------------"+outputStream[i][1]);
 				}
 
 				ImageGaze.gazeImage(outputStream,counter);
@@ -111,7 +112,7 @@ public class IrisDetectionConstantly {
 			del2x = (int) center2.x - localRadiusX2;
 			del2y = localRadiusY2 - (int) center2.y;
 		}
-		int errorFactor = 2;
+		int errorFactor = 20;
 		if ((delx - del2x > errorFactor || delx - del2x < -errorFactor)
 				|| (dely - del2y > errorFactor || dely - del2y < -errorFactor)) {
 			delx = 0;
