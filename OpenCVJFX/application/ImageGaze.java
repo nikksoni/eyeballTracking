@@ -31,16 +31,24 @@ public class ImageGaze extends JPanel {
 	static JLabel picLabel;
 	static int counter = 46;
 	static int count = 0;
+	static double imageHeight = 0;
+	static double imageWidth = 0;
 
+
+	public static void getImageDim(double height, double width){
+		imageHeight = height;
+		imageWidth = width;
+	}
+	
 	public static BufferedImage process(BufferedImage old, int xCord, int yCord) {
 		int w = old.getWidth();
 		int h = old.getHeight();
 
-		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+		BufferedImage img = new BufferedImage((int) imageWidth, (int) imageHeight, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 
 		Graphics2D g2d = img.createGraphics();
 
-		g2d.drawImage(old, 0, 0, w, h, null);
+		g2d.drawImage(old, 0, 0, (int) imageWidth, (int) imageHeight, null);
 		g2d.setStroke(new BasicStroke(12));
 		g2d.setColor(Color.BLUE);
 		g2d.drawOval(xCord, yCord, 19, 10);

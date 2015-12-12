@@ -40,7 +40,7 @@ import javax.swing.GroupLayout.Alignment;
  */
 public class Main extends Application
 {
-	public static String mainImgPath;
+	public static String mainImgPath;	
 
 	static{
 		//System.out.println(System.getProperty("java.library.path"));

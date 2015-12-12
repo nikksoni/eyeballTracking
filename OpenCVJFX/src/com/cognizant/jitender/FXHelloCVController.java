@@ -41,6 +41,7 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
 import application.Main;
+import application.ImageGaze;
 
 /**
  * The controller for our application, where the application logic is
@@ -50,6 +51,10 @@ import application.Main;
  *
  */
 public class FXHelloCVController {
+
+	double imageHeight = 0;
+	double imageWidth = 0;
+	
 	public static int flag = 0;
 	// the FXML button
 	@FXML
@@ -109,6 +114,9 @@ public class FXHelloCVController {
 								BufferedImage bufferedImage = ImageIO.read(fis);
 								Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
 								currentFrame.setImage(imageToShow);
+								imageHeight = currentFrame.getImage().getHeight();
+								imageWidth = currentFrame.getImage().getWidth();
+								ImageGaze.getImageDim(imageHeight,imageWidth);
 								grabFrame(threshold.getValue());
 							}
 							catch (IOException e) {
