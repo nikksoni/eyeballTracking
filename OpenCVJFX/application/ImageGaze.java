@@ -31,24 +31,18 @@ public class ImageGaze extends JPanel {
 	static JLabel picLabel;
 	static int counter = 46;
 	static int count = 0;
-	static double imageHeight = 0;
-	static double imageWidth = 0;
+	static int imageHeight = 880;
+	static int imageWidth = 880;
 
-
-	public static void getImageDim(double height, double width){
-		imageHeight = height;
-		imageWidth = width;
-	}
-	
 	public static BufferedImage process(BufferedImage old, int xCord, int yCord) {
 		int w = old.getWidth();
 		int h = old.getHeight();
-
-		BufferedImage img = new BufferedImage((int) imageWidth, (int) imageHeight, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+//System.out.println(imageWidth+"----lll--"+imageHeight);
+		BufferedImage img = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 
 		Graphics2D g2d = img.createGraphics();
 
-		g2d.drawImage(old, 0, 0, (int) imageWidth, (int) imageHeight, null);
+		g2d.drawImage(old, 0, 0, imageWidth, imageHeight, null);
 		g2d.setStroke(new BasicStroke(12));
 		g2d.setColor(Color.BLUE);
 		g2d.drawOval(xCord, yCord, 19, 10);
@@ -66,7 +60,7 @@ public class ImageGaze extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		panel = new JPanel();
 		final JFrame f = new JFrame();
 		Timer timer = new Timer((int) arr[count][2], new ActionListener() {

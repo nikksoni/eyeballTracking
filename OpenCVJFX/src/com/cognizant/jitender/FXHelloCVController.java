@@ -52,9 +52,6 @@ import application.ImageGaze;
  */
 public class FXHelloCVController {
 
-	double imageHeight = 0;
-	double imageWidth = 0;
-	
 	public static int flag = 0;
 	// the FXML button
 	@FXML
@@ -111,12 +108,9 @@ public class FXHelloCVController {
 						if(1==flag){
 							try {
 								InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
-								BufferedImage bufferedImage = ImageIO.read(fis);
+								BufferedImage bufferedImage = Main.rescale(ImageIO.read(fis));
 								Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
 								currentFrame.setImage(imageToShow);
-								imageHeight = currentFrame.getImage().getHeight();
-								imageWidth = currentFrame.getImage().getWidth();
-								ImageGaze.getImageDim(imageHeight,imageWidth);
 								grabFrame(threshold.getValue());
 							}
 							catch (IOException e) {

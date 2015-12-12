@@ -40,7 +40,8 @@ import javax.swing.GroupLayout.Alignment;
  */
 public class Main extends Application
 {
-	public static String mainImgPath;	
+	public static String mainImgPath;
+    private static final int baseSize = 880;
 
 	static{
 		//System.out.println(System.getProperty("java.library.path"));
@@ -48,14 +49,13 @@ public class Main extends Application
 		//System.loadLibrary("opencv_java300.dll");
 	}
 
-	class ImageLoader extends JFrame{
+	public class ImageLoader extends JFrame{
 
 	    private JPanel contentPane;
 	    File targetFile;
 	    BufferedImage targetImg;
 	    public JPanel panel,panel_1,mainPanel;
-	    private static final int baseSize = 850;
-	    private static final String basePath ="/";
+	    private static final String basePath ="C:/Users/";
 
 		public void loaderStart(final String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
@@ -137,14 +137,6 @@ public class Main extends Application
 
 	        panel.setLayout(gl_panel);
 	    }
-	    public BufferedImage rescale(BufferedImage originalImage)
-	    {
-	        BufferedImage resizedImage = new BufferedImage(baseSize, baseSize, BufferedImage.TYPE_INT_RGB);
-	        Graphics2D g = resizedImage.createGraphics();
-	        g.drawImage(originalImage, 0, 0, baseSize, baseSize, null);
-	        g.dispose();
-	        return resizedImage;
-	    }
 	    public void setTarget(File reference)
 	    {
 	        try {
@@ -180,6 +172,15 @@ public class Main extends Application
 	    }
 	}
 
+
+    public static BufferedImage rescale(BufferedImage originalImage)
+    {
+        BufferedImage resizedImage = new BufferedImage(baseSize, baseSize, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, baseSize, baseSize, null);
+        g.dispose();
+        return resizedImage;
+    }
 	@Override
 	public void start(Stage primaryStage)
 	{
