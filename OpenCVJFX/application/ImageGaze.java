@@ -36,30 +36,30 @@ public class ImageGaze extends JPanel {
 		int w = old.getWidth();
 		int h = old.getHeight();
 
-		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+		BufferedImage img = new BufferedImage(880, 880, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 
 		Graphics2D g2d = img.createGraphics();
 
-		g2d.drawImage(old, 0, 0, null);
-		 g2d.setStroke(new BasicStroke(12));
+		g2d.drawImage(old, 0, 0, 880, 880, null);
+		g2d.setStroke(new BasicStroke(12));
+		g2d.setColor(Color.BLUE);
 		g2d.drawOval(xCord, yCord, 19, 10);
-		g2d.setPaint(Color.red);
 		g2d.dispose();
 		return img;
 	}
 
-	public static void create(double[][] arr) {
+	public static void create(final double[][] arr) {
 
 		try {
 			Path currentRelativePath = Paths.get("");
-			String s = currentRelativePath.toAbsolutePath().toString();
-			InputStream fis = new BufferedInputStream(new FileInputStream(s+"/resources/download.png"));
+			//String s = currentRelativePath.toAbsolutePath().toString();
+			InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
 			image = ImageIO.read(fis);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		panel = new JPanel();
-		JFrame f = new JFrame();
+		final JFrame f = new JFrame();
 		Timer timer = new Timer((int) arr[count][2], new ActionListener() {
 
 			@Override
@@ -87,7 +87,7 @@ public class ImageGaze extends JPanel {
 		timer.start();
 	}
 
-	public static void gazeImage(double[][] array, int count) {
+	public static void gazeImage(final double[][] array, int count) {
 		counter = count;
 		EventQueue.invokeLater(new Runnable() {
 
@@ -96,25 +96,4 @@ public class ImageGaze extends JPanel {
 			}
 		});
 	}
-
-	 public static void main(String[] args) {
-	
-	
-	 final double[][] testArray=new double[1000][3];
-	 for(int i=0;i<counter;i++)
-	 {
-	 testArray[i][0]=(388+39*i)%400;
-	 testArray[i][1]=(148+19*i)%400;
-	 testArray[i][2]=(503+1004*i)%5000;
-	 System.out.println(i+"  "+testArray[i][0]+" "+testArray[i][1]+" "+testArray[i][2]);
-	
-	 }
-	
-	  EventQueue.invokeLater(new Runnable() {
-	 
-	  public void run() {
-	  create(testArray);
-	  }
-	  });
-	 }
 }

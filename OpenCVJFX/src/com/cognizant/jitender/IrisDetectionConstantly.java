@@ -30,7 +30,7 @@ public class IrisDetectionConstantly {
 	static int counter=0;
 	static File file;
 	public static void saveData(Point button) throws FileNotFoundException, IOException{
-//		 try {  
+//		 try {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				double relX=a.getLocation().x-button.x;
 				double relY=a.getLocation().y-button.y;
@@ -39,34 +39,34 @@ public class IrisDetectionConstantly {
 					outputStream[i][0]=outputStream[i][0]+relX;
 					outputStream[i][1]=outputStream[i][1]+relY;
 				}
-				
+
 				ImageGaze.gazeImage(outputStream,counter);
-	           /* file = new File("finalMainData.txt");  
-	            if (!file.exists()) {  
-	                file.createNewFile();  
-	            }  
+	           /* file = new File("finalMainData.txt");
+	            if (!file.exists()) {
+	                file.createNewFile();
+	            }
 //	  System.out.println(outputStream[counter][0]+"--------------"+outputStream[counter][1]);
-	            // Write text on  txt file.  
-	            FileWriter fw = new FileWriter(file, true);  
-	            BufferedWriter bw = new BufferedWriter(fw); 
+	            // Write text on  txt file.
+	            FileWriter fw = new FileWriter(file, true);
+	            BufferedWriter bw = new BufferedWriter(fw);
 	            for (int i = 0; i <= counter; i++) {
 //	            	 System.out.println(outputStream[i][0]+"--------------"+outputStream[i][1]);
-//	            	 bw.write("output["+i+"][0]="+outputStream[i][0]+"; output["+i+"][1]="+outputStream[i][1]+"\n"); 
-	            	 bw.write((outputStream[i][0]+relX)+"  "+(outputStream[i][1]+relY)+"\n"); 
+//	            	 bw.write("output["+i+"][0]="+outputStream[i][0]+"; output["+i+"][1]="+outputStream[i][1]+"\n");
+	            	 bw.write((outputStream[i][0]+relX)+"  "+(outputStream[i][1]+relY)+"\n");
 	            	System.out.println("Done");
 				}
 	            System.out.println("Done");
-	            bw.close();  
-	  
-	        } catch (IOException e) {  
+	            bw.close();
+
+	        } catch (IOException e) {
 	        	System.out.println("Error");
-	            e.printStackTrace();  
+	            e.printStackTrace();
 	        }          */
-	}  	
-	
+	}
+
 	public static Mat detectPoint(Rect rect1, Rect rect2, Mat input, Mat output, int irisRadius,
 			int thresholdLevel) {
-		
+
 //		Imgproc.rectangle(input, new Point(rect1.x, rect1.y), new Point(rect1.x + rect1.width,
 //				rect1.y + rect1.height), new Scalar(0, 255, 0));
 //		Imgproc.rectangle(input, new Point(rect2.x, rect2.y), new Point(rect2.x + rect2.width,
@@ -134,8 +134,8 @@ public class IrisDetectionConstantly {
 		input = drawPoint(pt1, pt2, input);
 //		 return grey;
 		return input;
-	}	
-	
+	}
+
 	public static Mat drawPoint(Point point1, Point point2, Mat input) {
 		Point defaultCenter = new Point(input.cols() / 2, input.rows() / 2);
 		int margin = 60;
@@ -158,13 +158,13 @@ public class IrisDetectionConstantly {
 		}
 		return input;
 	}
-	
+
 	private static int findMax(Mat grey, int xAxis, int yAxis, int irisRadius,
 			int thresholdLevel) {
 		int count = 0;
 		int radiusSq = irisRadius * irisRadius;
 		for (int y = 1; y < irisRadius; y++) {
-			int ySq = y * y; 
+			int ySq = y * y;
 			int x = (int) Math.sqrt(radiusSq - ySq);
 			count += checkPoint(grey, xAxis + x, yAxis + y) ? 1 : 0;
 			count += checkPoint(grey, xAxis - x, yAxis + y) ? 1 : 0;

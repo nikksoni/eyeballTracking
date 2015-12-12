@@ -13,7 +13,7 @@
       <Button fx:id="setConfig" layoutX="330.0" layoutY="680.0" mnemonicParsing="false" onAction="#setConfiguration" text="set" />
       <Slider fx:id="threshold" layoutX="828.0" layoutY="170.0" max="1500.0" min="100.0" orientation="VERTICAL" prefHeight="257.0" prefWidth="14.0" value="300.0" />
       <ChoiceBox fx:id="radius" layoutX="558.0" layoutY="680.0" prefWidth="150.0" />
-     
-     
+
+
    </children>
 </Pane>

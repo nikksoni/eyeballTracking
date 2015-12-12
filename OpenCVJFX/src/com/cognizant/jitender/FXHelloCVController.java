@@ -2,9 +2,13 @@ package src.com.cognizant.jitender;
 
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,8 +17,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -33,14 +40,17 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
+import application.Main;
+
 /**
  * The controller for our application, where the application logic is
  * implemented. It handles the button for starting/stopping the camera and the
  * acquired video stream.
- * 
- * 
+ *
+ *
  */
 public class FXHelloCVController {
+	public static int flag = 0;
 	// the FXML button
 	@FXML
 	private Button button;
@@ -69,7 +79,7 @@ public class FXHelloCVController {
 
 	/**
 	 * The action triggered by pushing the button on the GUI
-	 * 
+	 *
 	 * @param event
 	 *            the push button event
 	 */
@@ -93,9 +103,21 @@ public class FXHelloCVController {
 
 					@Override
 					public void run() {
-
-						Image imageToShow = grabFrame(threshold.getValue());
-						currentFrame.setImage(imageToShow);
+						if(false){
+							try {
+								InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
+								BufferedImage bufferedImage = ImageIO.read(fis);
+								Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
+								currentFrame.setImage(imageToShow);
+							}
+							catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+						else{
+							Image imageToShow = grabFrame(threshold.getValue());
+							currentFrame.setImage(imageToShow);
+						}
 					}
 				};
 
@@ -155,13 +177,25 @@ public class FXHelloCVController {
 					IrisDetectionConstantly.p2.y);
 			 }
 
+		 	/*try {
+				InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
+				BufferedImage bufferedImage = ImageIO.read(fis);
+				Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
+
+				currentFrame.setImage(imageToShow);
+
+				flag = 1;
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}*/
 		}
 
 	}
 
 	/**
 	 * Get a frame from the opened video stream (if any)
-	 * 
+	 *
 	 * @return the {@link Image} to show
 	 */
 	private Image grabFrame(double threshold) {
@@ -194,7 +228,7 @@ public class FXHelloCVController {
 
 	/**
 	 * Convert a Mat object (OpenCV) in the corresponding Image for JavaFX
-	 * 
+	 *
 	 * @param frame
 	 *            the {@link Mat} representing the current frame
 	 * @return the {@link Image} to show
@@ -219,8 +253,8 @@ public class FXHelloCVController {
 		// directory.
 		Path currentRelativePath = Paths.get("");
 		String s = currentRelativePath.toAbsolutePath().toString();
-		CascadeClassifier faceDetector = new CascadeClassifier(
-				s+"/resources/haarcascade_eye.xml");
+		//System.out.println(s);
+		CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_eye.xml");
 		// C:/Program%20Files/Java/jdk1.6.0_06/bin/file.txt
 //		Mat image = Imgcodecs.imread("D:/eyeballProject/OpenCVJFX/resources/lena.png");
 
@@ -265,9 +299,9 @@ public class FXHelloCVController {
 		 * for (int i = 0; i < contours.size(); i++) { double area
 		 * =Imgproc.contourArea(contours.get(i)); Rect
 		 * rect=Imgproc.boundingRect(contours.get(i));
-		 * 
+		 *
 		 * int radius = rect.width/2; // Approximate radius
-		 * 
+		 *
 		 * // Look for round shaped blob if (area >= 30 && Math.abs(1 -
 		 * ((double)rect.width / (double)rect.height))<=0.2 && Math.abs(1 -
 		 * (area / (Math.PI * Math.pow(radius, 2))))<=0.2) {
