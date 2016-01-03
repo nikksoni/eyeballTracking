@@ -29,23 +29,36 @@ public class ImageGaze extends JPanel {
 	static JFrame frame;
 	static JPanel panel;
 	static JLabel picLabel;
-	static int counter = 46;
+	static int counter = 0;
 	static int count = 0;
 	static int imageHeight = 880;
 	static int imageWidth = 880;
 
-	public static BufferedImage process(BufferedImage old, int xCord, int yCord) {
+	public static BufferedImage process(BufferedImage old, double[][] arrFin, int count ) {
 		int w = old.getWidth();
 		int h = old.getHeight();
-//System.out.println(imageWidth+"----lll--"+imageHeight);
+//System.out.println(xCord+"----IMAGE--"+yCord);
 		BufferedImage img = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 
 		Graphics2D g2d = img.createGraphics();
 
 		g2d.drawImage(old, 0, 0, imageWidth, imageHeight, null);
-		g2d.setStroke(new BasicStroke(12));
-		g2d.setColor(Color.BLUE);
-		g2d.drawOval(xCord, yCord, 19, 10);
+		for(int stepWiseloc=0; stepWiseloc<count; stepWiseloc++)
+		{	
+			int xCordCurr = (int) arrFin[stepWiseloc][0];
+			int yCordCurr = (int) arrFin[stepWiseloc][1];
+			if(stepWiseloc != 0){
+				int xCordPrev = (int) arrFin[stepWiseloc-1][0];
+				int yCordPrev = (int) arrFin[stepWiseloc-1][1];
+				g2d.setStroke(new BasicStroke(2));
+				g2d.setColor(Color.BLACK);
+				g2d.drawLine(xCordPrev, yCordPrev, xCordCurr, yCordCurr);
+			}
+			
+			g2d.setStroke(new BasicStroke(12));
+			g2d.setColor(Color.BLUE);
+			g2d.drawOval(xCordCurr, yCordCurr, 19, 10);
+		}
 		g2d.dispose();
 		return img;
 	}
@@ -67,7 +80,7 @@ public class ImageGaze extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newImage = process(image, (int) arr[count][0], (int) arr[count][1]);
+				newImage = process(image, arr, count);
 
 				picLabel = new JLabel(new ImageIcon(newImage));
 

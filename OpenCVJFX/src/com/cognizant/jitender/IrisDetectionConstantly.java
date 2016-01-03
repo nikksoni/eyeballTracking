@@ -38,7 +38,7 @@ public class IrisDetectionConstantly {
 				{
 					outputStream[i][0]=outputStream[i][0]+relX;
 					outputStream[i][1]=outputStream[i][1]+relY;
-					//System.out.println(outputStream[i][0]+"--------------"+outputStream[i][1]);
+					System.out.println(outputStream[i][0]+"----FRAME-----"+outputStream[i][1]);
 				}
 
 				ImageGaze.gazeImage(outputStream,counter);

@@ -55,7 +55,7 @@ public class Main extends Application
 	    File targetFile;
 	    BufferedImage targetImg;
 	    public JPanel panel,panel_1,mainPanel;
-	    private static final String basePath ="C:/Users/";
+	    private static final String basePath ="/home/shashishchandra/Downloads";
 
 		public void loaderStart(final String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
