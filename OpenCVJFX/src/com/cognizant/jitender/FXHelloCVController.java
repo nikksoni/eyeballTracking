@@ -35,6 +35,7 @@ import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
@@ -207,6 +208,7 @@ public class FXHelloCVController {
 		// GraphicsDevice gd =
 		// GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 		Image imageToShow = null;
+//		new Mat();
 		Mat frame = new Mat();
 		// System.out.println("th"+threshold);
 		// check if the capture is open
@@ -260,8 +262,8 @@ public class FXHelloCVController {
 		CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_eye.xml");
 		// C:/Program%20Files/Java/jdk1.6.0_06/bin/file.txt
 //		Mat image = Imgcodecs.imread("D:/eyeballProject/OpenCVJFX/resources/lena.png");
-
-		Mat grayScaleImageMat = new Mat();
+		Size size=new Size(880,720);
+		Mat grayScaleImageMat = new Mat(size,0);
 		Imgproc.cvtColor(inputFrame, grayScaleImageMat, Imgproc.COLOR_BGR2GRAY);
 		// String filename = "faceDetection.png";
 		// System.out.println(String.format("Writing %s", filename));

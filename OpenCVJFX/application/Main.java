@@ -41,7 +41,9 @@ import javax.swing.GroupLayout.Alignment;
 public class Main extends Application
 {
 	public static String mainImgPath;
-    private static final int baseSize = 880;
+    private static final int baseHieght = 720;
+    private static final int baseWidth = 880;
+    
 
 	static{
 		//System.out.println(System.getProperty("java.library.path"));
@@ -175,9 +177,9 @@ public class Main extends Application
 
     public static BufferedImage rescale(BufferedImage originalImage)
     {
-        BufferedImage resizedImage = new BufferedImage(baseSize, baseSize, BufferedImage.TYPE_INT_RGB);
+        BufferedImage resizedImage = new BufferedImage(640,480,  BufferedImage.TYPE_INT_RGB);
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0, 0, baseSize, baseSize, null);
+        g.drawImage(originalImage, 0, 0, 640, 480, null);
         g.dispose();
         return resizedImage;
     }

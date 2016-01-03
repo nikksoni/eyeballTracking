@@ -31,8 +31,8 @@ public class ImageGaze extends JPanel {
 	static JLabel picLabel;
 	static int counter = 0;
 	static int count = 0;
-	static int imageHeight = 880;
-	static int imageWidth = 880;
+	static int imageHeight = 480;
+	static int imageWidth = 640;
 
 	public static BufferedImage process(BufferedImage old, double[][] arrFin, int count ) {
 		int w = old.getWidth();
@@ -41,7 +41,6 @@ public class ImageGaze extends JPanel {
 		BufferedImage img = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 
 		Graphics2D g2d = img.createGraphics();
-
 		g2d.drawImage(old, 0, 0, imageWidth, imageHeight, null);
 		for(int stepWiseloc=0; stepWiseloc<count; stepWiseloc++)
 		{	
@@ -105,6 +104,7 @@ public class ImageGaze extends JPanel {
 
 	public static void gazeImage(final double[][] array, int count) {
 		counter = count;
+		System.out.println("Fx="+array[0][0]+"Fy="+array[0][1]);
 		EventQueue.invokeLater(new Runnable() {
 
 			public void run() {

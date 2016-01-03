@@ -14,6 +14,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import application.ImageGaze;
@@ -36,8 +37,8 @@ public class IrisDetectionConstantly {
 				double relY=a.getLocation().y-button.y;
 				for(int i=0;i<counter;i++)
 				{
-					outputStream[i][0]=outputStream[i][0]+relX;
-					outputStream[i][1]=outputStream[i][1]+relY;
+					outputStream[i][0]=outputStream[i][0];//+relX;
+					outputStream[i][1]=outputStream[i][1];//+relY;
 					System.out.println(outputStream[i][0]+"----FRAME-----"+outputStream[i][1]);
 				}
 
@@ -72,7 +73,8 @@ public class IrisDetectionConstantly {
 //				rect1.y + rect1.height), new Scalar(0, 255, 0));
 //		Imgproc.rectangle(input, new Point(rect2.x, rect2.y), new Point(rect2.x + rect2.width,
 //				rect2.y + rect2.height), new Scalar(0, 255, 0));
-		Mat grey = new Mat();
+		Size size=new Size(880, 720);
+		Mat grey = new Mat(size,0);
 		Imgproc.Canny(input, grey, thresholdLevel, 600, 5, true);
 		int localMax1 = 0;
 		int localRadiusX1 = 0;
@@ -103,7 +105,7 @@ public class IrisDetectionConstantly {
 			}
 		}
 		int delx = 0, dely = 0, del2x = 0, del2y = 0;
-		double dis = 56.2;
+		double dis = 61.2;
 		if (center1 != null) {
 			delx = (int) center1.x - localRadiusX1;
 			dely = localRadiusY1 - (int) center1.y;
