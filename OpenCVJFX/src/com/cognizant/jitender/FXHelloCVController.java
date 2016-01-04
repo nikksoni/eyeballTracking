@@ -124,7 +124,10 @@ public class FXHelloCVController {
 						}
 					}
 				};
-
+				if(0==flag){
+					this.button.setVisible(false);
+					this.setConfig.setVisible(true);
+				}
 				this.timer = Executors.newSingleThreadScheduledExecutor();
 				this.timer.scheduleAtFixedRate(frameGrabber, 0, 10, TimeUnit.MILLISECONDS);
 
@@ -140,7 +143,7 @@ public class FXHelloCVController {
 			// the camera is not active at this point
 			this.cameraActive = false;
 			// update again the button content
-			this.button.setText("Start Camera");
+			this.button.setVisible(false);
 			try {
 				Point butt = new Point(button.getLayoutX() + button.getWidth() / 2,
 						button.getLayoutY() + button.getHeight() / 2);
@@ -179,6 +182,7 @@ public class FXHelloCVController {
 					IrisDetectionConstantly.p1.y);
 			IrisDetectionConstantly.center2 = new Point(IrisDetectionConstantly.p2.x,
 					IrisDetectionConstantly.p2.y);
+			this.setConfig.setVisible(false);
 			 }
 
 		 	try {
@@ -187,7 +191,7 @@ public class FXHelloCVController {
 				Image imageToShow = SwingFXUtils.toFXImage(bufferedImage, null);
 
 				currentFrame.setImage(imageToShow);
-
+				this.button.setVisible(true);
 				flag = 1;
 			}
 			catch (IOException e) {
