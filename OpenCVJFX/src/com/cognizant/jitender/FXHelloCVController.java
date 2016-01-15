@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import javax.imageio.ImageIO;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -29,7 +27,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfPoint;
@@ -40,7 +37,8 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
-
+import org.opencv.videoio.Videoio;
+import src.com.constants.Constants;
 import application.Main;
 import application.ImageGaze;
 
@@ -106,7 +104,7 @@ public class FXHelloCVController {
 
 					@Override
 					public void run() {
-						if(1==flag){
+						if(2==flag){
 							try {
 								InputStream fis = new BufferedInputStream(new FileInputStream(Main.mainImgPath));
 								BufferedImage bufferedImage = Main.rescale(ImageIO.read(fis));
@@ -207,18 +205,16 @@ public class FXHelloCVController {
 	 * @return the {@link Image} to show
 	 */
 	private Image grabFrame(double threshold) {
-		// init everything
-		// System.out.println( Toolkit.getDefaultToolkit().get +"kjhkj");
-		// GraphicsDevice gd =
-		// GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
 		Image imageToShow = null;
-//		new Mat();
+//		Mat frame = new Mat(Constants.SCREEN_DIMENSION,0);
 		Mat frame = new Mat();
 		// System.out.println("th"+threshold);
 		// check if the capture is open
 		if (this.capture.isOpened()) {
 			try {
 				// read the current frame
+//			    this.capture.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, Constants.WIDTH_RESOLUTION);
+//			    this.capture.set(Videoio.CV_CAP_PROP_FRAME_HEIGHT, Constants.HIEGHT_RESOLUTION);
 				this.capture.read(frame);
 
 				// if the frame is not empty, process it
