@@ -36,9 +36,7 @@ public class IrisDetectionConstantly {
 	static Mat previousFrame=null;
 	static Mat previousBimaryGreyFrame=null;
 	
-	static File file;
 	public static void saveData(Point button) throws FileNotFoundException, IOException{
-//		 try {
 				PointerInfo a = MouseInfo.getPointerInfo();
 				double relX=a.getLocation().x-button.x;
 				double relY=a.getLocation().y-button.y;
@@ -50,35 +48,10 @@ public class IrisDetectionConstantly {
 				}
 
 				ImageGaze.gazeImage(outputStream,counter);
-	           /* file = new File("finalMainData.txt");
-	            if (!file.exists()) {
-	                file.createNewFile();
-	            }
-//	  System.out.println(outputStream[counter][0]+"--------------"+outputStream[counter][1]);
-	            // Write text on  txt file.
-	            FileWriter fw = new FileWriter(file, true);
-	            BufferedWriter bw = new BufferedWriter(fw);
-	            for (int i = 0; i <= counter; i++) {
-//	            	 System.out.println(outputStream[i][0]+"--------------"+outputStream[i][1]);
-//	            	 bw.write("output["+i+"][0]="+outputStream[i][0]+"; output["+i+"][1]="+outputStream[i][1]+"\n");
-	            	 bw.write((outputStream[i][0]+relX)+"  "+(outputStream[i][1]+relY)+"\n");
-	            	System.out.println("Done");
-				}
-	            System.out.println("Done");
-	            bw.close();
-
-	        } catch (IOException e) {
-	        	System.out.println("Error");
-	            e.printStackTrace();
-	        }          */
 	}
 
 	public static Mat detectPoint(Rect rect1, Rect rect2, Mat input, Mat output, int irisRadius,
 			int thresholdLevel) {
-		System.out.println("prevF");
-		System.out.println(previousFrame);
-		
-
 //		Imgproc.rectangle(input, new Point(rect1.x, rect1.y), new Point(rect1.x + rect1.width,
 //				rect1.y + rect1.height), new Scalar(0, 255, 0));
 //		Imgproc.rectangle(input, new Point(rect2.x, rect2.y), new Point(rect2.x + rect2.width,
@@ -86,20 +59,20 @@ public class IrisDetectionConstantly {
 		Size size=new Size(880, 720);
 		Mat grey = new Mat(size,0);
 		Imgproc.Canny(input, grey, thresholdLevel, 600, 5, true);
-        if (previousBimaryGreyFrame != null) {
-            boolean deflection = checkPercentChangeWRTPreviousFrame(previousEyeCenter1, previousEyeCenter2, grey,
-                    irisRadius);
-            if (deflection) {
-                if (previousEyeCenter1.x > rect1.x + 0.4 * rect1.width
-                        && previousEyeCenter1.x <= rect1.x + 0.6 * rect1.width
-                        && previousEyeCenter1.y > rect1.y + 0.4 * rect1.height
-                        && previousEyeCenter1.y <= rect1.y + 0.6 * rect1.height) {
-                    Imgproc.circle(grey, previousEyeCenter1, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
-                    Imgproc.circle(grey, previousEyeCenter2, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
-                    return grey;
-                }
-            }
-        }
+//        if (previousBimaryGreyFrame != null) {
+//            boolean deflection = checkPercentChangeWRTPreviousFrame(previousEyeCenter1, previousEyeCenter2, grey,
+//                    irisRadius);
+//            if (deflection) {
+//                if (previousEyeCenter1.x > rect1.x + 0.4 * rect1.width
+//                        && previousEyeCenter1.x <= rect1.x + 0.6 * rect1.width
+//                        && previousEyeCenter1.y > rect1.y + 0.4 * rect1.height
+//                        && previousEyeCenter1.y <= rect1.y + 0.6 * rect1.height) {
+//                    Imgproc.circle(grey, previousEyeCenter1, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
+//                    Imgproc.circle(grey, previousEyeCenter2, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
+//                    return grey;
+//                }
+//            }
+//        }
 		int localMax1 = 0;
 		int localRadiusX1 = 0;
 		int localRadiusY1 = 0;
@@ -128,6 +101,7 @@ public class IrisDetectionConstantly {
 				}
 			}
 		}
+		System.out.println("lm1 "+localMax1+"  lm2  "+localMax2);
 		int delx = 0, dely = 0, del2x = 0, del2y = 0;
 		double dis = 61.2;
 		if (center1 != null) {
@@ -146,35 +120,35 @@ public class IrisDetectionConstantly {
 			del2x = 0;
 			del2y = 0;
 		}
-		if(previousFrame==null){
-			previousFrame=new Mat();
-		}
-		System.out.println("st1");
-		previousFrame=input.clone();
-		previousBimaryGreyFrame=grey.clone();
-		System.out.println("success");
-		previousEyeCenter1.x=localRadiusX1;
-		previousEyeCenter2.x=localRadiusX2;
-		previousEyeCenter1.y=localRadiusY1;
-		previousEyeCenter2.y=localRadiusY2;
-		System.out.println("eee......");
+//		if(previousFrame==null){
+//			previousFrame=new Mat();
+//		}
+//		System.out.println("st1");
+//		previousFrame=input.clone();
+//		previousBimaryGreyFrame=grey.clone();
+//		System.out.println("success");
+//		previousEyeCenter1.x=localRadiusX1;
+//		previousEyeCenter2.x=localRadiusX2;
+//		previousEyeCenter1.y=localRadiusY1;
+//		previousEyeCenter2.y=localRadiusY2;
+//		System.out.println("eee......");
 		int dx = (int) ((delx * dis) / 1.2);
 		int dy = (int) ((dely * dis) / 1.2);
 		Point pt1 = new Point(input.cols() / 2 + dx, input.rows() / 2 + dy);
 //		 Imgproc.circle(input, pt1, 1, new Scalar(255, 255, 255), 3, 10, 0);
 		p1 = new Point(localRadiusX1, localRadiusY1);
-//		Imgproc.circle(input, p1, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
-		Imgproc.circle(grey, p1, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
+		Imgproc.circle(input, p1, irisRadius, new Scalar(0, 0, 0), 1, 10, 0);
+//		Imgproc.circle(grey, p1, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
 		dx = (int) ((del2x * dis) / 1.2);
 		dy = (int) ((del2y * dis) / 1.2);
 		Point pt2 = new Point(input.cols() / 2 + dx, input.rows() / 2 + dy);
 //		 Imgproc.circle(input, pt2, 1, new Scalar(255, 255, 255), 3, 10, 0);
 		p2 = new Point(localRadiusX2, localRadiusY2);
-//		Imgproc.circle(input, p2, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
-		Imgproc.circle(grey, p2, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
+		Imgproc.circle(input, p2, irisRadius, new Scalar(0, 0, 0), 1, 10, 0);
+//		Imgproc.circle(grey, p2, irisRadius, new Scalar(255, 255, 255), 1, 10, 0);
 		input = drawPoint(pt1, pt2, input);
-		 return grey;
-//		return input;
+//		 return grey;
+		return input;
 	}
 
 	public static Mat drawPoint(Point point1, Point point2, Mat input) {
@@ -203,41 +177,90 @@ public class IrisDetectionConstantly {
 	private static int findMax(Mat grey, int xAxis, int yAxis, int irisRadius,
 			int thresholdLevel) {
 		int count = 0;
-		int radiusSq = irisRadius * irisRadius;
-		int midLimit=(int) Math.round(Math.sqrt(radiusSq/2));
-		for (int y = 1; y < midLimit; y++) {
-			int ySq = y * y;
-			int x = (int) Math.round(Math.sqrt(radiusSq - ySq));
-			count += checkPoint(grey, xAxis + x, yAxis + y) ? 1 : 0;
-			count += checkPoint(grey, xAxis - x, yAxis + y) ? 1 : 0;
-			count += checkPoint(grey, xAxis + x, yAxis - y) ? 1 : 0;
-			count += checkPoint(grey, xAxis - x, yAxis - y) ? 1 : 0;
-		}
-		for(int x=midLimit;x>0;x--){
-            int xSq = x * x;
-            int y = (int)Math.round(Math.sqrt(radiusSq - xSq));
-           
-            count += checkPoint(grey, xAxis + x, yAxis + y) ? 1 : 0;
-            count += checkPoint(grey, xAxis - x, yAxis + y) ? 1 : 0;
-            count += checkPoint(grey, xAxis + x, yAxis - y) ? 1 : 0;
-            count += checkPoint(grey, xAxis - x, yAxis - y) ? 1 : 0;
-        }
+		int continuityCount=0;
+		int prevPixel=0;
+		int localMaxContinuity=1;
 		
-		count += checkPoint(grey, xAxis, yAxis + irisRadius) ? 1 : 0;
-		count += checkPoint(grey, xAxis - irisRadius, yAxis) ? 1 : 0;
-		count += checkPoint(grey, xAxis, yAxis - irisRadius) ? 1 : 0;
-		count += checkPoint(grey, xAxis + irisRadius, yAxis) ? 1 : 0;
-		return count;
+		int radiusSq = irisRadius * irisRadius;
+        int midLimit = (int) Math.round(Math.sqrt(radiusSq / 2));
+        for (int y = -midLimit; y < midLimit; y++) {
+            int ySq = y * y;
+            int x = (int) Math.round(Math.sqrt(radiusSq - ySq));
+            if (checkPoint(grey, xAxis + x, yAxis + y)) {
+                count++;
+                continuityCount++;
+                prevPixel = 1;
+            } else {
+                if (prevPixel == 0) {
+                    if (localMaxContinuity < continuityCount) {
+                        localMaxContinuity = continuityCount;
+                    }
+                    continuityCount = 0;
+                }
+                prevPixel = 0;
+            }
+        }
+        
+        for (int x = midLimit; x > -midLimit; x--) {
+            int xSq = x * x;
+            int y = (int) Math.round(Math.sqrt(radiusSq - xSq));
+            if (checkPoint(grey, xAxis + x, yAxis + y)) {
+                count++;
+                continuityCount++;
+                prevPixel = 1;
+            } else {
+                if (prevPixel == 0) {
+                    if (localMaxContinuity < continuityCount) {
+                        localMaxContinuity = continuityCount;
+                    }
+                    continuityCount = 0;
+                }
+                prevPixel = 0;
+            }
+        }
+        for (int y = midLimit; y > -midLimit; y--) {
+            int ySq = y * y;
+            int x = (int) Math.round(Math.sqrt(radiusSq - ySq));
+            if (checkPoint(grey, xAxis - x, yAxis + y)) {
+                count++;
+                continuityCount++;
+                prevPixel = 1;
+            } else {
+                if (prevPixel == 0) {
+                    if (localMaxContinuity < continuityCount) {
+                        localMaxContinuity = continuityCount;
+                    }
+                    continuityCount = 0;
+                }
+                prevPixel = 0;
+            }
+        }
+        for (int x = -midLimit; x < midLimit; x++) {
+            int xSq = x * x;
+            int y = (int) Math.round(Math.sqrt(radiusSq - xSq));
+            if (checkPoint(grey, xAxis + x, yAxis - y)) {
+                count++;
+                continuityCount++;
+                prevPixel = 1;
+            } else {
+                if (prevPixel == 0) {
+                    if (localMaxContinuity < continuityCount) {
+                        localMaxContinuity = continuityCount;
+                    }
+                    continuityCount = 0;
+                }
+                prevPixel = 0;
+            }
+        }
+        if(localMaxContinuity<continuityCount)
+        {
+            localMaxContinuity=continuityCount;
+        }
+		return count*localMaxContinuity;
 	}
 
 	public static boolean checkPoint(Mat grey, int row, int colm) {
 		int pixelValue1 = (int) grey.get(colm, row)[0];
-		// int pixelValue2 = (int) grey.get(colm, row - 1)[0];
-		// int pixelValue3 = (int) grey.get(colm, row + 1)[0];
-		// int pixelValue4 = (int) grey.get(colm + 1, row)[0];
-		// int pixelValue5 = (int) grey.get(colm - 1, row)[0];
-		// return (pixelValue1 > 200 || pixelValue2 > 200 || pixelValue3 > 200
-		// || pixelValue4 > 200 || pixelValue5 > 200) ? true : false;
 		return (pixelValue1 > 200) ? true : false;
 	}
 	
@@ -282,8 +305,7 @@ public class IrisDetectionConstantly {
 		whiteCountE1=detectChange(currentFrame, (int)previousIrisCenter1.x , (int)previousIrisCenter1.y +irisRadius) ? whiteCountE1+1  : whiteCountE1;
 		whiteCountE2=detectChange(currentFrame, (int)previousIrisCenter2.x , (int)previousIrisCenter2.y +irisRadius) ? whiteCountE2+1 : whiteCountE2;
 		
-		System.out.println("dddd          "+ (whiteCountE1)+"      "+((whiteCountE2))+"          "+ totalCount);
-//		previousEyeCenter2-whiteCountE1
+		System.out.println("pixCha  "+ whiteCountE1+"   "+whiteCountE2);
 		if(whiteCountE1<=2 || whiteCountE2<=2){
 		    return true;
 		}
@@ -294,7 +316,6 @@ public class IrisDetectionConstantly {
 	}
 	
 	public static boolean detectChange(Mat currentFrame,int x,int y){
-//	    System.out.println(currentFrame.get(x, y)[0]+ "         "+previousBimaryGreyFrame.get(x, y)[0]);
 		return (currentFrame.get(x, y)[0]==previousBimaryGreyFrame.get(x, y)[0]?false:true);
 		
 	}
