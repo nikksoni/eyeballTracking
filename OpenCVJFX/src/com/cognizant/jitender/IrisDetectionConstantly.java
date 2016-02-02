@@ -37,9 +37,9 @@ public class IrisDetectionConstantly {
 	static Mat previousBimaryGreyFrame=null;
 	
 	public static void saveData(Point button) throws FileNotFoundException, IOException{
-				PointerInfo a = MouseInfo.getPointerInfo();
-				double relX=a.getLocation().x-button.x;
-				double relY=a.getLocation().y-button.y;
+			//	PointerInfo a = MouseInfo.getPointerInfo();
+			//	double relX=a.getLocation().x-button.x;
+			//	double relY=a.getLocation().y-button.y;
 				for(int i=0;i<counter;i++)
 				{
 					outputStream[i][0]=outputStream[i][0];//+relX;
@@ -101,7 +101,7 @@ public class IrisDetectionConstantly {
 				}
 			}
 		}
-		System.out.println("lm1 "+localMax1+"  lm2  "+localMax2);
+		System.out.println("lm1 center left eye"+localMax1+"  lm2 center right eye"+localMax2);
 		int delx = 0, dely = 0, del2x = 0, del2y = 0;
 		double dis = 61.2;
 		if (center1 != null) {
@@ -112,7 +112,7 @@ public class IrisDetectionConstantly {
 			del2x = (int) center2.x - localRadiusX2;
 			del2y = localRadiusY2 - (int) center2.y;
 		}
-		int errorFactor = 30;
+		int errorFactor = 100; //30 original
 		if ((delx - del2x > errorFactor || delx - del2x < -errorFactor)
 				|| (dely - del2y > errorFactor || dely - del2y < -errorFactor)) {
 			delx = 0;
@@ -153,7 +153,7 @@ public class IrisDetectionConstantly {
 
 	public static Mat drawPoint(Point point1, Point point2, Mat input) {
 		Point defaultCenter = new Point(input.cols() / 2, input.rows() / 2);
-		int margin = 60;
+		int margin = 100; //60 org
 		if (center1 != null) {
 			if (startTime == 0) {
 				startTime = System.nanoTime();

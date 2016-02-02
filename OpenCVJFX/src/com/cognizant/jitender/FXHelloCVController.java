@@ -65,7 +65,7 @@ public class FXHelloCVController {
 	private ImageView currentFrame;
 	@FXML
 	private ChoiceBox radius;
-	ObservableList<Integer> radiusOptions = FXCollections.observableArrayList(8, 9, 10, 11, 12, 13);
+	ObservableList<Integer> radiusOptions = FXCollections.observableArrayList(7, 8, 9, 10, 11, 12, 13);
 	@FXML
 	private void initialize() {
 		radius.setItems(radiusOptions);
